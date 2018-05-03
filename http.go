@@ -13,7 +13,7 @@ import (
 
 var client *http.Client
 
-func HTTPClient() *http.Client {
+func HTTPInstance() *http.Client {
 	if client == nil {
 		client = &http.Client{
 			Transport: &http.Transport{
@@ -26,12 +26,10 @@ func HTTPClient() *http.Client {
 }
 
 func printLocalDial(network, addr string) (net.Conn, error) {
-	dial := net.Dialer{
+	conn, err := net.Dialer{
 		Timeout:   5 * time.Second,
 		KeepAlive: 30 * time.Second,
-	}
-
-	conn, err := dial.Dial(network, addr)
+	}.Dial(network, addr)
 	if err != nil {
 		return conn, err
 	}
@@ -45,7 +43,7 @@ func PostUrlencoded(address string, isKeep bool, data map[string]string) ([]byte
 	for k, v := range data {
 		u.Add(k, v)
 	}
-	resp, err := HTTPClient().Post(address, "application/x-www-form-urlencoded", strings.NewReader(u.Encode()))
+	resp, err := HTTPInstance().Post(address, "application/x-www-form-urlencoded", strings.NewReader(u.Encode()))
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +59,7 @@ func PostUrlencoded(address string, isKeep bool, data map[string]string) ([]byte
 }
 
 func PostRawJson(address string, isKeep bool, data []byte) ([]byte, error) {
-	resp, err := HTTPClient().Post(address, "application/json;utf-8", bytes.NewBuffer(data))
+	resp, err := HTTPInstance().Post(address, "application/json;utf-8", bytes.NewBuffer(data))
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +75,7 @@ func PostRawJson(address string, isKeep bool, data []byte) ([]byte, error) {
 }
 
 func Post(address, contentType string, isKeep bool, data []byte) ([]byte, error) {
-	resp, err := HTTPClient().Post(address, contentType, bytes.NewBuffer(data))
+	resp, err := HTTPInstance().Post(address, contentType, bytes.NewBuffer(data))
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +97,7 @@ func GetUrlencoded(address string, isKeep bool, data map[string]string) ([]byte,
 		q.Set(k, v)
 	}
 	u.RawQuery = q.Encode()
-	resp, err := HTTPClient().Get(u.String())
+	resp, err := HTTPInstance().Get(u.String())
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +115,7 @@ func GetUrlencoded(address string, isKeep bool, data map[string]string) ([]byte,
 func Get(address string, isKeep bool) ([]byte, error) {
 	u, _ := url.Parse(address)
 
-	resp, err := HTTPClient().Get(u.String())
+	resp, err := HTTPInstance().Get(u.String())
 	if err != nil {
 		return nil, err
 	}

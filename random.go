@@ -21,7 +21,7 @@ func RandIdInt64() int64 {
 }
 
 //0123456789 select 6 password number
-var RAND_NUM_TMP = []byte("0123456789")
+var RandNumTmps = []byte("0123456789")
 
 func RandNumber(length int, chars []byte) string {
 	newPwd := make([]byte, length)

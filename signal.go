@@ -38,13 +38,13 @@ func register(sig os.Signal) (chan os.Signal, error) {
 }
 
 func RegisterContinueSignal(sig os.Signal, process func()) error {
-	sig_chan, err := register(sig)
+	sigChans, err := register(sig)
 	if err != nil {
 		return err
 	}
 	go func() {
 		for {
-			msg := <-sig_chan
+			msg := <-sigChans
 			log.Println("sig", msg, "receveid")
 			process()
 		}

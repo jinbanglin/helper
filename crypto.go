@@ -7,8 +7,6 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io"
-	"sort"
-	"strings"
 	"crypto/hmac"
 )
 
@@ -74,38 +72,4 @@ func (b *B64Encoding) B64Decode(s string) string {
 		return ""
 	}
 	return string(result)
-}
-
-//--------------------- for wechat pay -----------------------
-func CheckSign(msg map[string]interface{}, key, sign string) bool {
-	signCalc := CalcSign(msg, key)
-	if sign == signCalc {
-		return true
-	}
-	return false
-}
-
-//CalcSign
-func CalcSign(mReq map[string]interface{}, key string) (sign string) {
-	sortedKeys := make([]string, 0)
-	for k, _ := range mReq {
-		sortedKeys = append(sortedKeys, k)
-	}
-
-	sort.Strings(sortedKeys)
-
-	var signStrings string
-	for _, k := range sortedKeys {
-		value := fmt.Sprintf("%v", mReq[k])
-		if value != "" {
-			signStrings = signStrings + k + "=" + value + "&"
-		}
-	}
-
-	signStrings = signStrings + "key=" + key
-	md5Ctx := md5.New()
-	md5Ctx.Write(String2Byte(signStrings))
-	cipherStr := md5Ctx.Sum(nil)
-	upperSign := strings.ToUpper(hex.EncodeToString(cipherStr))
-	return upperSign
 }
