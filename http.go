@@ -26,10 +26,11 @@ func HTTPInstance() *http.Client {
 }
 
 func printLocalDial(network, addr string) (net.Conn, error) {
-	conn, err := net.Dialer{
+	dial:=&net.Dialer{
 		Timeout:   5 * time.Second,
 		KeepAlive: 30 * time.Second,
-	}.Dial(network, addr)
+	}
+	conn, err := dial.Dial(network, addr)
 	if err != nil {
 		return conn, err
 	}
