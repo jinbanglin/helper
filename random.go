@@ -49,7 +49,7 @@ func RandNumber(length int, chars []byte) string {
 
 //[min,max]
 func Int64Range(min, max int64) int64 {
-	b, err := rand.Int(rand.Reader, big.NewInt(max+1 - min))
+	b, err := rand.Int(rand.Reader, big.NewInt(max+1-min))
 	if err != nil {
 		return max
 	}
@@ -64,6 +64,10 @@ func RandInt(min, max int) int {
 
 func RandInt32(min, max int32) int32 {
 	return r.Int31n(max+1-min) + min
+}
+
+func RandUInt32(min, max uint32) uint32 {
+	return uint32(r.Int31n(int32(max+1-min)) + int32(min))
 }
 
 const alphanum = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
