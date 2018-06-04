@@ -2,6 +2,7 @@ package helper
 
 import (
 	"regexp"
+	"os"
 )
 
 var (
@@ -119,4 +120,9 @@ func IsInStringSlice(dst string, src []string) bool {
 		}
 	}
 	return false
+}
+
+func IsFileExist(f string) bool {
+	_, err := os.Stat(f)
+	return err == nil || os.IsExist(err)
 }
