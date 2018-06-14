@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"strings"
 	"time"
+	"crypto/tls"
 )
 
 var client *http.Client
@@ -25,8 +26,33 @@ func HTTPInstance() *http.Client {
 	return client
 }
 
+var tlsClient *http.Client
+
+func HTTPTLSInstance(certFile, keyFile string) (*http.Client) {
+	if tlsClient == nil {
+		cert, err := tls.LoadX509KeyPair(certFile, keyFile)
+		if err != nil {
+			panic(err)
+		}
+		tlsConfig := &tls.Config{
+			Certificates: []tls.Certificate{cert},
+		}
+		tlsClient = &http.Client{
+			Transport: &http.Transport{
+				Proxy:                 http.ProxyFromEnvironment,
+				Dial:                  printLocalDial,
+				TLSHandshakeTimeout:   10 * time.Second,
+				ExpectContinueTimeout: 1 * time.Second,
+				TLSClientConfig:       tlsConfig,
+			},
+			Timeout: 60 * time.Second,
+		}
+	}
+	return tlsClient
+}
+
 func printLocalDial(network, addr string) (net.Conn, error) {
-	dial:=&net.Dialer{
+	dial := &net.Dialer{
 		Timeout:   5 * time.Second,
 		KeepAlive: 30 * time.Second,
 	}
