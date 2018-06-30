@@ -66,17 +66,11 @@ func IsIPv4(ip string, regex ...string) bool {
 }
 
 func IsNilString(s string) bool {
-	if len(s) < 1 {
-		return true
-	}
-	return false
+	return len(s) == 0
 }
 
 func IsNotNilString(s string) bool {
-	if len(s) > 1 {
-		return true
-	}
-	return false
+	return len(s) > 0
 }
 
 func IsMoney2Point(s string, regex ...string) bool {
