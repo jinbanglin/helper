@@ -3,23 +3,29 @@ package helper
 import (
 	"math"
 
-	"github.com/jinbanglin/log"
 	"github.com/json-iterator/go"
 	"time"
+	"github.com/jinbanglin/log"
 )
 
-func Marshal2String(data interface{}) string {
-	s, err := jsoniter.MarshalToString(data)
-	if err != nil {
-		log.Error(" |err ", err)
+func Marshal2String(data interface{}) (s string) {
+	var err error
+	if data != nil {
+		s, err = jsoniter.MarshalToString(data)
+		if err != nil {
+			log.Error(" |err ", err)
+		}
 	}
 	return s
 }
 
-func Marshal2Bytes(data interface{}) []byte {
-	s, err := jsoniter.Marshal(data)
-	if err != nil {
-		log.Error(" |err ", err)
+func Marshal2Bytes(data interface{}) (s []byte) {
+	var err error
+	if data != nil {
+		s, err = jsoniter.Marshal(data)
+		if err != nil {
+			log.Error(" |err ", err)
+		}
 	}
 	return s
 }
