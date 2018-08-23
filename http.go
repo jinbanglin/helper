@@ -2,6 +2,7 @@ package helper
 
 import (
 	"bytes"
+	"crypto/tls"
 	"io"
 	"io/ioutil"
 	"net"
@@ -9,7 +10,6 @@ import (
 	"net/url"
 	"strings"
 	"time"
-	"crypto/tls"
 )
 
 var client *http.Client
@@ -28,7 +28,7 @@ func HTTPInstance() *http.Client {
 
 var tlsClient *http.Client
 
-func HTTPTLSInstance(certFile, keyFile string) (*http.Client) {
+func HTTPTLSInstance(certFile, keyFile string) *http.Client {
 	if tlsClient == nil {
 		cert, err := tls.LoadX509KeyPair(certFile, keyFile)
 		if err != nil {

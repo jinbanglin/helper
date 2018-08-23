@@ -3,31 +3,31 @@ package helper
 import (
 	"math"
 
-	"github.com/json-iterator/go"
 	"time"
 	"github.com/jinbanglin/log"
+	"encoding/json"
 )
 
 func Marshal2String(data interface{}) (s string) {
-	var err error
 	if data != nil {
-		s, err = jsoniter.MarshalToString(data)
+		b, err := json.Marshal(data)
 		if err != nil {
 			log.Error(" |err ", err)
 		}
+		s = Byte2String(b)
 	}
 	return s
 }
 
 func Marshal2Bytes(data interface{}) (s []byte) {
-	var err error
 	if data != nil {
-		s, err = jsoniter.Marshal(data)
+		s, err := json.Marshal(data)
 		if err != nil {
 			log.Error(" |err ", err)
 		}
+		return s
 	}
-	return s
+	return nil
 }
 
 func Round(f float64, n int) float64 {

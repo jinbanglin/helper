@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"math"
 )
 
 //uuid+unix time
@@ -99,4 +100,11 @@ func RandomLetters(n int, alphabets ...byte) string {
 
 func GenOrderNo(userId string) string {
 	return time.Now().Format("0201150405") + userId
+}
+
+func NormFloat64(num int, sq, ar float64) (f []float64) {
+	for i := 0; i < num; i++ {
+		f = append(f, math.Abs(r.NormFloat64()*sq+ar))
+	}
+	return
 }
