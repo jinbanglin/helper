@@ -9,6 +9,8 @@ import (
 
 var gRdsClient *redis.Client
 
+const RedisDsyncLockKey = "dsynclock:topic:"
+
 func NewDLock(topic string, timeOut time.Duration) *lock.Locker {
   if gRdsClient == nil {
     gRdsClient = redis.NewClient(&redis.Options{
@@ -17,5 +19,5 @@ func NewDLock(topic string, timeOut time.Duration) *lock.Locker {
     })
   }
 
-  return lock.New(gRdsClient, topic, &lock.Options{LockTimeout: timeOut, RetryCount: 10})
+  return lock.New(gRdsClient, RedisDsyncLockKey+topic, &lock.Options{LockTimeout: timeOut, RetryCount: 10})
 }
