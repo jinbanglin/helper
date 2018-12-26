@@ -52,3 +52,10 @@ func RedisChaos() {
     os.Exit(1)
   }
 }
+
+func SetExpireAt(key string, value interface{}, t time.Time) error {
+  if GRedisRing.Set(key, value, 0) == nil {
+    return GRedisRing.ExpireAt(key, t).Err()
+  }
+  return nil
+}

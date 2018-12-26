@@ -1,4 +1,16 @@
 package helper
+
+import (
+  "strconv"
+  "time"
+)
+
+func MakeSpecId() string {
+  return strconv.FormatInt(time.Now().Unix(), 10) +
+    RandNumber(5, RandNumTmps) +
+    RandNumber(5, RandNumTmps)
+}
+
 //
 //import (
 //	"fmt"
