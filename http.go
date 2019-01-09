@@ -27,25 +27,22 @@ func HTTPInstance() *http.Client {
 }
 
 func HTTPTLSInstance(certFile, keyFile string) *http.Client {
-  var tlsClient *http.Client
   cert, err := tls.LoadX509KeyPair(certFile, keyFile)
   if err != nil {
     panic(err)
   }
-  tlsConfig := &tls.Config{
-    Certificates: []tls.Certificate{cert},
-  }
-  tlsClient = &http.Client{
+  return &http.Client{
     Transport: &http.Transport{
       Proxy:                 http.ProxyFromEnvironment,
       Dial:                  printLocalDial,
       TLSHandshakeTimeout:   10 * time.Second,
       ExpectContinueTimeout: 1 * time.Second,
-      TLSClientConfig:       tlsConfig,
+      TLSClientConfig: &tls.Config{
+        Certificates: []tls.Certificate{cert},
+      },
     },
     Timeout: 60 * time.Second,
   }
-  return tlsClient
 }
 
 func printLocalDial(network, addr string) (net.Conn, error) {
