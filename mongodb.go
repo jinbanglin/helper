@@ -1,9 +1,9 @@
 package helper
 
 import (
-"gopkg.in/mgo.v2"
+  "gopkg.in/mgo.v2"
 
-"github.com/spf13/viper"
+  "github.com/spf13/viper"
 )
 
 func MgoChaos() {
@@ -43,14 +43,11 @@ func NewMgoSession() *mgo.Session {
 func MgoExecute(colName string, q func(*mgo.Collection) error) error {
   s := NewMgoSession().Clone()
   defer s.Close()
-  c := s.DB(GMgoDatabaseName).C(colName)
-  return q(c)
+  return q(s.DB(GMgoDatabaseName).C(colName))
 }
 
 func MgoExecuteBulk(colName string, q func(*mgo.Bulk) error) error {
   s := NewMgoSession().Clone()
   defer s.Close()
-  bulk := s.DB(GMgoDatabaseName).C(colName).Bulk()
-  return q(bulk)
+  return q(s.DB(GMgoDatabaseName).C(colName).Bulk())
 }
-
