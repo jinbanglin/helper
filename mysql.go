@@ -5,18 +5,18 @@ import (
   "github.com/spf13/viper"
 )
 
-var engine *xorm.Engine
+var MysqlEngine *xorm.Engine
 
-func MYSQLInstance() *xorm.Engine {
-  if engine == nil {
+func MysqlChaos() *xorm.Engine {
+  if MysqlEngine == nil {
     var err error
-    engine, err = xorm.NewEngine("mysql", viper.GetString("mysql.addr"))
+    MysqlEngine, err = xorm.NewEngine("mysql", viper.GetString("mysql.addr"))
     if err != nil {
       panic(err)
       return nil
     }
-    engine.ShowSQL(viper.GetBool("mysql.show_log"))
-    return engine
+    MysqlEngine.ShowSQL(viper.GetBool("mysql.show_log"))
+    return MysqlEngine
   }
-  return engine
+  return MysqlEngine
 }
