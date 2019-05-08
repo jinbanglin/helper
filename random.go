@@ -71,6 +71,11 @@ func RandUInt32(min, max uint32) uint32 {
 	return uint32(r.Int31n(int32(max+1-min)) + int32(min))
 }
 
+func RandUInt64(min, max uint64) uint64 {
+	return uint64(r.Int63n(int64(max+1-min)) + int64(min))
+}
+
+
 const alphanum = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
 func RandomLetters(n int, alphabets ...byte) string {
