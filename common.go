@@ -5,6 +5,7 @@ import (
   "log"
   "time"
   "encoding/json"
+  "github.com/golang/protobuf/proto"
 )
 
 func Marshal2String(data interface{}) (s string) {
@@ -27,6 +28,17 @@ func Marshal2Bytes(data interface{}) (s []byte) {
     return s
   }
   return nil
+}
+
+func PBMarshal2String(data proto.Message) (s string) {
+  if data != nil {
+    b, err := proto.Marshal(data)
+    if err != nil {
+      log.Println(" |err ", err)
+    }
+    s = Byte2String(b)
+  }
+  return s
 }
 
 func Round(f float64, n int) float64 {
